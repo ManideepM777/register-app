@@ -43,7 +43,7 @@ pipeline {
            steps {
 	           script {
 		        withSonarQubeEnv('sonarqube-server') { 
-                        sh "mvn sonar:sonar -Dsonar.login=${ jenkins-sonarqube-token}"
+                        sh "mvn sonar:sonar -Dsonar.login=${jenkins-sonarqube-token}"
 		        }
 	           }	
            }
