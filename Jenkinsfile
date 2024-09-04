@@ -42,7 +42,7 @@ pipeline {
        stage("SonarQube Analysis"){
            steps {
 	           script {
-		        withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') { 
+		        withSonarQubeEnv(credentialsId: 'jenkinsonar') { 
                         sh "mvn sonar:sonar"
 		        }
 	           }	
@@ -52,7 +52,7 @@ pipeline {
        stage("Quality Gate"){
            steps {
                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkinsonar'
                 }	
             }
 
@@ -77,7 +77,7 @@ pipeline {
        stage("Trivy Scan") {
            steps {
                script {
-	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image ashfaque9x/register-app-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image manideepm777/register-app-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
                }
            }
        }
@@ -104,12 +104,12 @@ pipeline {
        failure {
              emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
                       subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Failed", 
-                      mimeType: 'text/html',to: "ashfaque.s510@gmail.com"
+                      mimeType: 'text/html',to: "manideepnaidu2@gmail.com"
       }
       success {
             emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
                      subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
-                     mimeType: 'text/html',to: "ashfaque.s510@gmail.com"
+                     mimeType: 'text/html',to: "manideepnaidu2@gmail.com"
       }      
    }
 }
