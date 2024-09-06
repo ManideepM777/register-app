@@ -21,6 +21,12 @@ pipeline {
                 }
         }
 
+	stage("Checkout from SCM"){
+                steps {
+                    git branch: 'main', credentialsId: 'github', url: 'https://github.com/ManideepM777/register-app.git'
+                }
+        }
+
         stage("Build Application"){
             steps {
                 sh "mvn clean package"
