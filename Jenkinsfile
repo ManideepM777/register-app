@@ -12,6 +12,7 @@ pipeline {
             IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
             IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
 	    JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+	    SONARQUBE_TOKEN = credentials('jenkins-sonarqube-token')
     }
     stages{
         stage("Cleanup Workspace"){
@@ -43,7 +44,7 @@ pipeline {
            steps {
 	           script {
 		        withSonarQubeEnv('sonarqube-server') { 
-                        sh "mvn sonar:sonar"
+                        sh "mvn sonar:sonar -Dsonar.login=${SONARQUBE_TOKEN}"
 		        }
 	           }	
            }
